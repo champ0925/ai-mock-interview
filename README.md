@@ -264,7 +264,70 @@ ai-mock-interview/
 
 ---
 
-## 7. 关键环境变量
+## 7. 环境变量配置
+
+项目有两份 `.env` 文件需要配置：[`ai-service/.env`](ai-service/.env.example) 和 [`server/.env`](server/.env.example)。两者都已提供 `.env.example` 模板，真实 `.env` 文件已被 [`.gitignore`](.gitignore) 忽略，请**切勿将真实密钥提交到 Git**。
+
+### 7.1 快速开始
+
+```bash
+# 在项目根目录执行
+cp ai-service/.env.example ai-service/.env
+cp server/.env.example     server/.env
+```
+
+然后按下面的说明填入真实值。
+
+### 7.2 ai-service/.env（Python AI 服务）
+
+| 变量 | 说明 | 示例 / 默认值 |
+|---|---|---|
+| `DASHSCOPE_API_KEY` | **必填**。阿里云百炼 / DashScope API Key，用于通义千问与 Embedding | `sk-xxxxxxxx...` |
+| `QWEN_MAX_MODEL` | 主力对话模型（面试官、报告） | `qwen-max` |
+| `QWEN_PLUS_MODEL` | 中等任务模型（匹配分析、出题） | `qwen-plus-0112` |
+| `QWEN_TURBO_MODEL` | 轻量任务模型（简历/JD 解析） | `qwen-turbo` |
+| `OCR_LANG` | PaddleOCR 识别语言 | `ch` |
+| `PADDLEOCR_HOME` | PaddleOCR 模型缓存目录 | `.paddleocr` |
+| `DB_HOST` / `DB_PORT` / `DB_NAME` / `DB_USER` / `DB_PASSWORD` | MySQL 连接信息 | `localhost` / `3306` / `ai_interview` / `root` / `your_password` |
+| `DB_POOL_MAX` / `DB_POOL_MIN` / `DB_POOL_MAX_IDLE` / `DB_CONNECT_TIMEOUT` | DBUtils 连接池参数 | `10` / `2` / `5` / `10` |
+| `EMBEDDING_MODEL` | 向量化模型 | `text-embedding-v4` |
+| `EMBEDDING_DIM` | 向量维度，需与 Chroma collection 保持一致 | `1024` |
+| `CHROMA_PERSIST_DIR` | Chroma 持久化目录（本地生成） | `./chroma_db` |
+| `CHROMA_COLLECTION` | Chroma collection 名 | `interview_questions` |
+| `QUESTION_BANK_DIR` | 题库文本目录 | `./question_bank` |
+| `RAG_TOP_K` | RAG 召回条数 | `7` |
+| `LLM_QUESTIONS_COUNT` | LLM 生成题目条数 | `1` |
+| `RAG_SCORE_THRESHOLD` | RAG 命中分数阈值（低于则丢弃） | `0.25` |
+
+> API Key 申请地址：<https://dashscope.console.aliyun.com/>
+
+### 7.3 server/.env（Node.js 后端）
+
+| 变量 | 说明 | 示例 / 默认值 |
+|---|---|---|
+| `DB_HOST` / `DB_PORT` / `DB_NAME` / `DB_USER` / `DB_PASSWORD` | MySQL 连接信息（与 ai-service 使用同一库） | `localhost` / `3306` / `ai_interview` / `root` / `your_password` |
+| `DB_POOL_MAX` / `DB_POOL_MIN` | Sequelize 连接池上下限 | `10` / `2` |
+| `DB_POOL_ACQUIRE` | 获取连接最长等待时间（ms） | `10000` |
+| `DB_POOL_IDLE` | 连接空闲多久后释放（ms） | `10000` |
+| `DB_POOL_EVICT` | 空闲连接回收间隔（ms） | `5000` |
+| `JWT_SECRET` | **必填**。JWT 签名密钥，**务必改为足够长的随机字符串**（建议 ≥ 32 位） | `please_change_to_a_long_random_string` |
+| `AI_SERVICE_URL` | ai-service 的访问地址 | `http://localhost:8000` |
+| `REDIS_HOST` / `REDIS_PORT` | Redis 连接信息，用于面试会话快照 | `localhost` / `6379` |
+
+### 7.4 安全提示
+
+- ❌ **不要**把真实的 `.env` 文件提交到 Git（已在 `.gitignore` 中）
+- 🔑 `JWT_SECRET` 生产环境务必替换为随机长字符串，可用：
+  ```bash
+  # Linux / macOS
+  openssl rand -hex 32
+  # 或 Node.js
+  node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+  ```
+- 🗝️ `DASHSCOPE_API_KEY` 不要出现在前端代码或公开仓库中
+- 🗄️ 生产环境建议将 MySQL/Redis 密码替换为强密码，并通过防火墙/内网限制访问
+
+---
 
 `ai-service/.env`：
 - `DASHSCOPE_API_KEY`（必填）
