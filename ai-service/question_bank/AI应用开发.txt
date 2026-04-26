@@ -1,0 +1,63 @@
+# AI 应用开发题库（共 20 道）
+
+请描述一次典型的 LLM 应用开发流程，
+从需求分析、Prompt 设计、工具链选型（LangChain / LlamaIndex / 自研）、
+评估、上线、监控到迭代的完整链路。
+
+Prompt Engineering 有哪些核心技巧？
+请举例说明 Few-shot、CoT（Chain-of-Thought）、ReAct、Self-Consistency 等方法各自适用的场景。
+
+请详细讲解 RAG（检索增强生成）的实现步骤，
+包括文档切分、向量化、向量数据库选型、检索召回、rerank、prompt 拼接，并说明每一步的优化方向。
+
+在 RAG 系统中，文档切分（chunk）策略对检索质量影响很大，
+你会如何设计 chunk size、overlap、以及按语义/段落切分？请给出具体的工程经验。
+
+请对比常见的向量数据库（Chroma、FAISS、Milvus、Pinecone、Weaviate）的特点，
+并说明在不同规模/部署场景下如何选型。
+
+什么是 Embedding？
+不同 Embedding 模型（如 OpenAI text-embedding、BGE、通义 text-embedding-v4）之间有哪些差异？你会如何在项目中做选型与评测？
+
+请讲一下你理解的 Function Calling / Tool Use 机制，
+如何在 LangChain 或原生 API 中实现一个带工具调用的 Agent？请结合具体代码描述。
+
+在 LLM 应用中如何做流式响应（streaming）？
+前后端如何协作？SSE 和 WebSocket 哪种更合适？请说明理由。
+
+LLM 应用的常见评测方式有哪些？
+如何设计一个可复现、可回归的自动化 eval pipeline？请举一个你做过的例子。
+
+如何控制 LLM 的输出格式？
+请对比 JSON mode、function calling、grammar constrained decoding、few-shot 示例等方案的稳定性与适用场景。
+
+请讲讲 LangChain 中 Chain、Agent、Tool、Memory 这些核心概念的关系，
+以及你在真实项目里是否踩过 LangChain 的坑（如性能、调试困难等）？
+
+如何优化 LLM 应用的响应延迟？
+请分别从 prompt 精简、模型选型、streaming、缓存、并行化等角度给出具体手段。
+
+在一个多轮对话系统里，如何高效管理上下文？
+当历史对话过长时，你会用什么策略（滚动窗口、摘要、向量检索、hierarchical memory）？
+
+请描述一次你调试 LLM 输出质量的实际经历，
+问题现象是什么，你如何定位根因，最终用什么方法解决的？
+
+如何在 LLM 应用中做 Prompt Injection 防护？
+请给出至少 3 种工程化防御手段。
+
+请讲一下你对 Agent 架构（ReAct、AutoGPT、BabyAGI、OpenAI Swarm、LangGraph 等）的理解，
+它们在任务规划与执行上的差异是什么？
+
+如果要把一个 LLM 应用从原型推到生产，
+你会重点关注哪些工程化问题（限流、成本、日志、监控、降级、灰度）？
+
+在 RAG 系统中，如何衡量检索质量？
+请列出至少 3 个检索层面的指标（如 recall@k、MRR、NDCG）和 1 种评估数据集构造方法。
+
+如何给 LLM 应用加上缓存？
+prompt 缓存、语义缓存（semantic cache）、embedding 缓存各适合什么场景？
+你如何保证缓存命中率与数据新鲜度之间的平衡？
+
+请谈一下你对 Model Context Protocol（MCP）或其他类似工具标准的理解，
+它对 LLM 应用的开发生态意味着什么？你是否用它改造过已有项目？
